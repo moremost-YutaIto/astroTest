@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npm install --prefix popular-plasma && npm run build --prefix popular-plasma",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
