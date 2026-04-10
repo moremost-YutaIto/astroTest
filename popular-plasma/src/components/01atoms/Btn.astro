@@ -1,0 +1,103 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit';
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: className = '',
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className].filter(Boolean).join(' ');
+---
+
+{href ? (
+  <a href={href} class={classes}>
+    <slot />
+    <span class="btn__arrow" aria-hidden="true"></span>
+  </a>
+) : (
+  <button type={type} class={classes}>
+    <slot />
+    <span class="btn__arrow" aria-hidden="true"></span>
+  </button>
+)}
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: font('ja');
+    font-weight: weight('medium');
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: opacity 0.2s easing('easeOutCubic'), background-color 0.2s easing('easeOutCubic');
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    // サイズ
+    &--sm {
+      font-size: 1.3rem;
+      padding: 8px 20px;
+    }
+    &--md {
+      font-size: 1.5rem;
+      padding: 14px 32px;
+    }
+    &--lg {
+      font-size: 1.6rem;
+      padding: 18px 48px;
+    }
+
+    // バリアント
+    &--primary {
+      background-color: color('primary');
+      color: color('white');
+    }
+    &--secondary {
+      background-color: color('secondary');
+      color: color('white');
+    }
+    &--outline {
+      background-color: transparent;
+      color: color('fontPrimary');
+      border: 1px solid currentColor;
+    }
+
+    // 矢印
+    &__arrow {
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background-color: currentColor;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 6px;
+        height: 6px;
+        border-top: 1px solid currentColor;
+        border-right: 1px solid currentColor;
+        transform: translateY(-50%) rotate(45deg);
+      }
+    }
+  }
+</style>

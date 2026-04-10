@@ -1,0 +1,112 @@
+---
+interface Props {
+  href: string;
+  image?: string;
+  imageAlt?: string;
+  tag?: string;
+  date?: string;
+  title: string;
+}
+
+const {
+  href,
+  image,
+  imageAlt = '',
+  tag,
+  date,
+  title,
+} = Astro.props;
+---
+
+<article class="card">
+  <a href={href} class="card__link">
+    <div class="card__image">
+      {image
+        ? <img src={image} alt={imageAlt} width="400" height="260" loading="lazy" />
+        : <div class="card__image-placeholder" aria-hidden="true"></div>
+      }
+    </div>
+    <div class="card__body">
+      <div class="card__meta">
+        {date && <time class="card__date" datetime={date}>{date}</time>}
+        {tag && <span class="card__tag">{tag}</span>}
+      </div>
+      <h3 class="card__title">{title}</h3>
+    </div>
+  </a>
+</article>
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .card {
+    &__link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+
+      &:hover {
+        opacity: 1;
+
+        .card__image img {
+          transform: scale(1.04);
+        }
+
+        .card__title {
+          color: color('primary');
+        }
+      }
+    }
+
+    &__image {
+      overflow: hidden;
+      aspect-ratio: 400 / 260;
+      background-color: color('gray');
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s easing('easeOutCubic');
+      }
+    }
+
+    &__image-placeholder {
+      width: 100%;
+      height: 100%;
+      background-color: color('gray');
+    }
+
+    &__body {
+      padding: 16px 0 0;
+    }
+
+    &__meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    &__date {
+      font-family: font('en');
+      font-size: 1.3rem;
+      color: #888a94;
+    }
+
+    &__tag {
+      font-size: 1.2rem;
+      padding: 2px 10px;
+      background-color: color('gray');
+      border-radius: 2px;
+    }
+
+    &__title {
+      font-size: 1.5rem;
+      font-weight: weight('medium');
+      line-height: 1.6;
+      transition: color 0.2s easing('easeOutCubic');
+    }
+  }
+</style>

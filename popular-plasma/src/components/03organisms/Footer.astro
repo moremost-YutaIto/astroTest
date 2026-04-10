@@ -1,0 +1,121 @@
+---
+const navItems = [
+  { label: '事業内容', href: '/service' },
+  { label: '実績', href: '/works' },
+  { label: '会社情報', href: '/company' },
+  { label: 'ニュース', href: '/news' },
+  { label: 'お問い合わせ', href: '/contact' },
+  { label: 'プライバシーポリシー', href: '/privacy' },
+];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__top">
+      <a href="/" class="footer__logo">
+        <span class="footer__logo-text">COMPANY</span>
+      </a>
+      <p class="footer__address">
+        〒000-0000 東京都○○区○○1-2-3<br />
+        TEL: 03-0000-0000
+      </p>
+    </div>
+
+    <nav class="footer__nav" aria-label="フッターナビゲーション">
+      <ul class="footer__nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a href={item.href} class="footer__nav-link">{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <p class="footer__copy">
+      <small>&copy; {currentYear} Company Name. All Rights Reserved.</small>
+    </p>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .footer {
+    background-color: color('secondary');
+    color: color('white');
+    padding: 64px 0 32px;
+
+    @include media() {
+      padding: 48px 0 24px;
+    }
+
+    &__inner {
+      @include container();
+    }
+
+    &__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 40px;
+
+      @include media() {
+        flex-direction: column;
+        gap: 24px;
+      }
+    }
+
+    &__logo-text {
+      font-family: font('en');
+      font-size: 2.4rem;
+      font-weight: weight('bold');
+      letter-spacing: 0.1em;
+      color: color('white');
+    }
+
+    &__address {
+      font-size: 1.3rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: right;
+
+      @include media() {
+        text-align: left;
+      }
+    }
+
+    &__nav {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 24px 0;
+      margin-bottom: 32px;
+    }
+
+    &__nav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 32px;
+    }
+
+    &__nav-link {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.2s easing('easeOutCubic');
+
+      &:hover {
+        opacity: 1;
+        color: color('white');
+      }
+    }
+
+    &__copy {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+    }
+  }
+</style>

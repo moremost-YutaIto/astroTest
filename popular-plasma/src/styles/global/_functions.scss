@@ -1,0 +1,68 @@
+// ============================================================
+// デザイントークン（案件ごとに上書きする）
+// ============================================================
+
+// 色
+$colors: (
+  'primary': #ffaa00,
+  'secondary': #333333,
+  'gray': #e1e2e5,
+  'error': #e03333,
+  'fontPrimary': #4a4b52,
+  'white': #ffffff,
+  'black': #000000,
+);
+
+// フォント
+$fontFamilies: (
+  'ja': ('Noto Sans JP', sans-serif),
+  'en': ('Montserrat', sans-serif),
+);
+
+$fontWeights: (
+  'regular': 400,
+  'medium': 500,
+  'bold': 700,
+);
+
+// ブレークポイント
+$breakpoints: (
+  'sp': 768px,
+  'tb': 1024px,
+  'pc': 1280px,
+);
+
+// イージング
+$easings: (
+  'easeOutCubic': cubic-bezier(0.33, 1, 0.68, 1),
+  'easeInCubic': cubic-bezier(0.32, 0, 0.67, 0),
+  'easeInOutCubic': cubic-bezier(0.65, 0, 0.35, 1),
+  'easeOutQuart': cubic-bezier(0.25, 1, 0.5, 1),
+  'easeOutQuint': cubic-bezier(0.22, 1, 0.36, 1),
+  'easeOutExpo': cubic-bezier(0.16, 1, 0.3, 1),
+);
+
+// コンテナ幅
+$containerMaxWidth: 1200px;
+$containerPadding: 24px;
+
+// ============================================================
+// ヘルパー関数
+// ============================================================
+@use 'sass:map';
+
+@function color($key) {
+  @return map.get($colors, $key);
+}
+
+@function font($key) {
+  @return map.get($fontFamilies, $key);
+}
+
+@function weight($key) {
+  @return map.get($fontWeights, $key);
+}
+
+@function easing($key) {
+  @return map.get($easings, $key);
+}

@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/03organisms/PageHero.astro';
+import Heading from '../components/01atoms/Heading.astro';
+
+const companyInfo = [
+  { label: '会社名', value: '株式会社○○' },
+  { label: '設立', value: '2015年4月' },
+  { label: '代表者', value: '代表取締役 山田 太郎' },
+  { label: '資本金', value: '1,000万円' },
+  { label: '従業員数', value: '25名（2026年4月現在）' },
+  { label: '所在地', value: '〒000-0000\n東京都○○区○○1-2-3 ○○ビル5F' },
+  { label: 'TEL', value: '03-0000-0000' },
+  { label: '事業内容', value: 'Webサイト制作・Webアプリケーション開発・UI/UXデザイン' },
+];
+
+const members = [
+  { name: '山田 太郎', role: '代表取締役 / CEO', bio: '前職にてWebディレクターとして10年の経験を経て創業。' },
+  { name: '鈴木 花子', role: 'CTО', bio: 'フロントエンドエンジニアとして大手IT企業に勤務後、共同創業者として参画。' },
+  { name: '田中 次郎', role: 'デザイン責任者', bio: 'UI/UXデザイナーとして多数のプロジェクトに従事。受賞歴多数。' },
+];
+---
+
+<Layout title="会社情報 | COMPANY" description="株式会社○○の会社概要・メンバー紹介です。">
+  <PageHero title="会社情報" en="Company" />
+
+  <section class="company-info">
+    <div class="company-info__inner">
+      <Heading en="About" align="left">会社概要</Heading>
+      <table class="company-table">
+        <tbody>
+          {companyInfo.map((row) => (
+            <tr class="company-table__row">
+              <th class="company-table__label">{row.label}</th>
+              <td class="company-table__value" set:html={row.value.replace(/\n/g, '<br />')} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="company-members">
+    <div class="company-members__inner">
+      <Heading en="Members" align="left">メンバー</Heading>
+      <ul class="members-list">
+        {members.map((member) => (
+          <li class="member-card">
+            <div class="member-card__avatar" aria-hidden="true"></div>
+            <div class="member-card__body">
+              <p class="member-card__role">{member.role}</p>
+              <h3 class="member-card__name">{member.name}</h3>
+              <p class="member-card__bio">{member.bio}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/global/functions' as *;
+  @use '../styles/global/mixin' as *;
+
+  .company-info {
+    padding: 96px 0;
+
+    @include media() {
+      padding: 64px 0;
+    }
+
+    &__inner {
+      @include container();
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+  }
+
+  .company-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    &__row {
+      border-bottom: 1px solid color('gray');
+
+      &:first-child {
+        border-top: 1px solid color('gray');
+      }
+    }
+
+    &__label {
+      width: 200px;
+      padding: 20px 24px 20px 0;
+      font-size: 1.4rem;
+      font-weight: weight('medium');
+      vertical-align: top;
+      white-space: nowrap;
+
+      @include media() {
+        display: block;
+        width: 100%;
+        padding: 16px 0 4px;
+        color: color('primary');
+        font-size: 1.2rem;
+      }
+    }
+
+    &__value {
+      padding: 20px 0;
+      font-size: 1.5rem;
+      line-height: 1.8;
+
+      @include media() {
+        display: block;
+        padding: 0 0 16px;
+      }
+    }
+  }
+
+  .company-members {
+    padding: 96px 0;
+    background-color: #f5f5f7;
+
+    @include media() {
+      padding: 64px 0;
+    }
+
+    &__inner {
+      @include container();
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+  }
+
+  .members-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+
+    @include media('tb') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media() {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .member-card {
+    background-color: color('white');
+    padding: 32px;
+
+    &__avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: color('gray');
+      margin-bottom: 20px;
+    }
+
+    &__role {
+      font-size: 1.2rem;
+      color: color('primary');
+      font-weight: weight('medium');
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    &__name {
+      font-size: 1.8rem;
+      font-weight: weight('bold');
+      margin-bottom: 12px;
+    }
+
+    &__bio {
+      font-size: 1.4rem;
+      line-height: 1.8;
+      color: color('fontPrimary');
+    }
+  }
+</style>

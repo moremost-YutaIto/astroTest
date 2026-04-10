@@ -1,0 +1,27 @@
+@use 'sass:map';
+@use 'functions' as *;
+
+// ============================================================
+// メディアクエリ
+// ============================================================
+
+// @include media() → max-width: 768px（SP）
+// @include media('tb') → max-width: 1024px（タブレット）
+@mixin media($breakpoint: 'sp') {
+  $bp: map.get($breakpoints, $breakpoint);
+  @media screen and (max-width: $bp) {
+    @content;
+  }
+}
+
+// ============================================================
+// コンテナ
+// ============================================================
+
+@mixin container() {
+  max-width: $containerMaxWidth;
+  padding-left: $containerPadding;
+  padding-right: $containerPadding;
+  margin-left: auto;
+  margin-right: auto;
+}

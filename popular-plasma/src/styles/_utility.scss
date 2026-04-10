@@ -1,0 +1,42 @@
+@use 'global/functions' as *;
+@use 'global/mixin' as *;
+
+// ============================================================
+// ユーティリティクラス
+// ============================================================
+
+// 表示切り替え
+.u-sp-only {
+  @include media('sp') {
+    display: block !important;
+  }
+  display: none !important;
+}
+
+.u-pc-only {
+  @include media('sp') {
+    display: none !important;
+  }
+}
+
+// テキスト配置
+.u-text-left   { text-align: left !important; }
+.u-text-center { text-align: center !important; }
+.u-text-right  { text-align: right !important; }
+
+// フォントウェイト
+@each $key, $val in $fontWeights {
+  .u-fw-#{$key} {
+    font-weight: $val !important;
+  }
+}
+
+// 色
+@each $key, $val in $colors {
+  .u-color-#{$key} {
+    color: $val !important;
+  }
+  .u-bg-#{$key} {
+    background-color: $val !important;
+  }
+}

@@ -1,0 +1,48 @@
+---
+interface Props {
+  level?: 1 | 2 | 3 | 4;
+  en?: string;
+  align?: 'left' | 'center';
+}
+
+const { level = 2, en, align = 'left' } = Astro.props;
+const Tag = `h${level}` as any;
+---
+
+<div class={`heading heading--${align}`}>
+  {en && <span class="heading__en">{en}</span>}
+  <Tag class="heading__ja"><slot /></Tag>
+</div>
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .heading {
+    &--center {
+      text-align: center;
+    }
+
+    &__en {
+      display: block;
+      font-family: font('en');
+      font-size: 1.2rem;
+      font-weight: weight('medium');
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: color('primary');
+      margin-bottom: 8px;
+    }
+
+    &__ja {
+      font-size: 3.2rem;
+      font-weight: weight('bold');
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+
+      @include media() {
+        font-size: 2.4rem;
+      }
+    }
+  }
+</style>

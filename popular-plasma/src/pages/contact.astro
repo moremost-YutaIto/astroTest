@@ -1,0 +1,309 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/03organisms/PageHero.astro';
+import Btn from '../components/01atoms/Btn.astro';
+---
+
+<Layout title="お問い合わせ | COMPANY" description="お仕事のご依頼・ご相談はこちらからお気軽にどうぞ。">
+  <PageHero title="お問い合わせ" en="Contact" />
+
+  <section class="contact">
+    <div class="contact__inner">
+      <p class="contact__lead">
+        お仕事のご依頼・ご相談はお気軽にどうぞ。<br />
+        通常2営業日以内にご返信いたします。
+      </p>
+
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-field">
+          <label class="form-field__label" for="name">
+            お名前
+            <span class="form-field__required" aria-label="必須">必須</span>
+          </label>
+          <input
+            class="form-field__input"
+            type="text"
+            id="name"
+            name="name"
+            autocomplete="name"
+            required
+            placeholder="山田 太郎"
+          />
+          <p class="form-field__error" id="nameError" aria-live="polite"></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="company">
+            会社名
+          </label>
+          <input
+            class="form-field__input"
+            type="text"
+            id="company"
+            name="company"
+            autocomplete="organization"
+            placeholder="株式会社○○"
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="email">
+            メールアドレス
+            <span class="form-field__required" aria-label="必須">必須</span>
+          </label>
+          <input
+            class="form-field__input"
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            required
+            placeholder="info@example.com"
+          />
+          <p class="form-field__error" id="emailError" aria-live="polite"></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="category">
+            お問い合わせ種別
+            <span class="form-field__required" aria-label="必須">必須</span>
+          </label>
+          <div class="form-field__select-wrap">
+            <select class="form-field__select" id="category" name="category" required>
+              <option value="">選択してください</option>
+              <option value="web">Webサイト制作</option>
+              <option value="app">Webアプリケーション開発</option>
+              <option value="design">UI/UXデザイン</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+          <p class="form-field__error" id="categoryError" aria-live="polite"></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="message">
+            お問い合わせ内容
+            <span class="form-field__required" aria-label="必須">必須</span>
+          </label>
+          <textarea
+            class="form-field__textarea"
+            id="message"
+            name="message"
+            required
+            rows="6"
+            placeholder="ご要望・ご質問などをご記入ください"
+          ></textarea>
+          <p class="form-field__error" id="messageError" aria-live="polite"></p>
+        </div>
+
+        <div class="form-field form-field--checkbox">
+          <label class="form-field__checkbox-label">
+            <input type="checkbox" name="privacy" id="privacy" required />
+            <span>
+              <a href="/privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
+              に同意する
+            </span>
+          </label>
+          <p class="form-field__error" id="privacyError" aria-live="polite"></p>
+        </div>
+
+        <div class="contact-form__submit">
+          <Btn type="submit" variant="primary" size="lg">送信する</Btn>
+        </div>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement | null;
+
+  const validators: Record<string, () => string> = {
+    name: () => {
+      const val = (form?.querySelector<HTMLInputElement>('#name'))?.value.trim() ?? '';
+      return val ? '' : 'お名前を入力してください';
+    },
+    email: () => {
+      const val = (form?.querySelector<HTMLInputElement>('#email'))?.value.trim() ?? '';
+      if (!val) return 'メールアドレスを入力してください';
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) ? '' : '正しいメールアドレスを入力してください';
+    },
+    category: () => {
+      const val = (form?.querySelector<HTMLSelectElement>('#category'))?.value ?? '';
+      return val ? '' : 'お問い合わせ種別を選択してください';
+    },
+    message: () => {
+      const val = (form?.querySelector<HTMLTextAreaElement>('#message'))?.value.trim() ?? '';
+      return val ? '' : 'お問い合わせ内容を入力してください';
+    },
+    privacy: () => {
+      const checked = (form?.querySelector<HTMLInputElement>('#privacy'))?.checked ?? false;
+      return checked ? '' : 'プライバシーポリシーへの同意が必要です';
+    },
+  };
+
+  const showError = (id: string, message: string) => {
+    const el = document.getElementById(`${id}Error`);
+    if (el) el.textContent = message;
+  };
+
+  // リアルタイムバリデーション
+  Object.keys(validators).forEach((key) => {
+    const el = form?.querySelector(`[name="${key}"]`);
+    el?.addEventListener('blur', () => {
+      showError(key, validators[key]());
+    });
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let hasError = false;
+    Object.entries(validators).forEach(([key, validate]) => {
+      const error = validate();
+      showError(key, error);
+      if (error) hasError = true;
+    });
+
+    if (hasError) return;
+
+    // 送信処理（fetch など）
+    console.log('送信OK');
+  });
+</script>
+
+<style lang="scss">
+  @use '../styles/global/functions' as *;
+  @use '../styles/global/mixin' as *;
+
+  .contact {
+    padding: 96px 0;
+
+    @include media() {
+      padding: 64px 0;
+    }
+
+    &__inner {
+      @include container();
+      max-width: 720px;
+    }
+
+    &__lead {
+      font-size: 1.5rem;
+      line-height: 1.9;
+      margin-bottom: 56px;
+
+      @include media() {
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &__submit {
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &__label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.4rem;
+      font-weight: weight('medium');
+    }
+
+    &__required {
+      font-size: 1.1rem;
+      padding: 2px 8px;
+      background-color: color('primary');
+      color: color('white');
+      border-radius: 2px;
+    }
+
+    &__input,
+    &__select,
+    &__textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1.5rem;
+      font-family: font('ja');
+      border: 1px solid color('gray');
+      border-radius: 2px;
+      background-color: color('white');
+      color: color('fontPrimary');
+      transition: border-color 0.2s;
+      appearance: none;
+
+      &:focus {
+        outline: none;
+        border-color: color('primary');
+      }
+
+      &::placeholder {
+        color: #bbbcc0;
+      }
+    }
+
+    &__select-wrap {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border-right: 1px solid color('fontPrimary');
+        border-bottom: 1px solid color('fontPrimary');
+        transform: translateY(-70%) rotate(45deg);
+        pointer-events: none;
+      }
+    }
+
+    &__textarea {
+      resize: vertical;
+      min-height: 160px;
+    }
+
+    &__error {
+      font-size: 1.3rem;
+      color: color('error');
+      min-height: 1em;
+    }
+
+    &--checkbox {
+      .form-field__checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.4rem;
+        cursor: pointer;
+
+        a {
+          color: color('primary');
+          text-decoration: underline;
+        }
+
+        input[type='checkbox'] {
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+          accent-color: color('primary');
+        }
+      }
+    }
+  }
+</style>

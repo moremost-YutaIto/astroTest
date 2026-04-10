@@ -1,0 +1,92 @@
+---
+import Heading from '../01atoms/Heading.astro';
+import Btn from '../01atoms/Btn.astro';
+import Card from '../02molecules/Card.astro';
+
+const newsList = [
+  {
+    href: '/news/1',
+    tag: 'お知らせ',
+    date: '2026-04-01',
+    title: '2026年度 新卒採用エントリー受付を開始しました',
+  },
+  {
+    href: '/news/2',
+    tag: 'プレスリリース',
+    date: '2026-03-15',
+    title: '株式会社○○と業務提携契約を締結いたしました',
+  },
+  {
+    href: '/news/3',
+    tag: 'お知らせ',
+    date: '2026-03-01',
+    title: 'ゴールデンウィーク期間中の営業について',
+  },
+];
+---
+
+<section class="news">
+  <div class="news__inner">
+    <div class="news__head">
+      <Heading en="News" align="left">最新情報</Heading>
+      <Btn href="/news" variant="outline" size="sm">一覧を見る</Btn>
+    </div>
+
+    <div class="news__list">
+      {newsList.map((item) => (
+        <Card
+          href={item.href}
+          tag={item.tag}
+          date={item.date}
+          title={item.title}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .news {
+    padding: 96px 0;
+
+    @include media() {
+      padding: 64px 0;
+    }
+
+    &__inner {
+      @include container();
+    }
+
+    &__head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+
+      @include media() {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+
+      @include media('tb') {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include media() {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/03organisms/PageHero.astro';
+import Card from '../../components/02molecules/Card.astro';
+
+const works = [
+  { href: '/works/1', tag: 'コーポレートサイト', title: '株式会社○○ コーポレートサイト リニューアル' },
+  { href: '/works/2', tag: 'ECサイト', title: '△△ブランド オンラインストア構築' },
+  { href: '/works/3', tag: 'Webアプリ', title: '社内業務管理システム開発' },
+  { href: '/works/4', tag: 'LP', title: '新サービス ランディングページ制作' },
+  { href: '/works/5', tag: 'コーポレートサイト', title: '□□株式会社 採用サイト制作' },
+  { href: '/works/6', tag: 'Webアプリ', title: '予約管理システム構築' },
+];
+
+const categories = ['すべて', 'コーポレートサイト', 'ECサイト', 'Webアプリ', 'LP'];
+---
+
+<Layout title="実績 | COMPANY" description="これまでに制作・開発した実績をご紹介します。">
+  <PageHero title="実績" en="Works" />
+
+  <section class="works">
+    <div class="works__inner">
+      <ul class="works__filter" role="list">
+        {categories.map((cat, i) => (
+          <li>
+            <button
+              class={`works__filter-btn${i === 0 ? ' is-active' : ''}`}
+              type="button"
+              data-filter={cat}
+            >
+              {cat}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div class="works__grid">
+        {works.map((work) => (
+          <Card
+            href={work.href}
+            tag={work.tag}
+            title={work.title}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.works__filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.works__grid .card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      const filter = btn.dataset.filter;
+
+      cards.forEach((card) => {
+        const tag = card.querySelector('.card__tag')?.textContent ?? '';
+        const show = filter === 'すべて' || tag === filter;
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .works {
+    padding: 96px 0;
+
+    @include media() {
+      padding: 64px 0;
+    }
+
+    &__inner {
+      @include container();
+    }
+
+    &__filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    &__filter-btn {
+      font-size: 1.3rem;
+      font-weight: weight('medium');
+      padding: 8px 20px;
+      border: 1px solid color('gray');
+      border-radius: 2px;
+      background-color: color('white');
+      color: color('fontPrimary');
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+
+      &:hover,
+      &.is-active {
+        background-color: color('primary');
+        border-color: color('primary');
+        color: color('white');
+      }
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px 32px;
+
+      @include media('tb') {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include media() {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+  }
+</style>

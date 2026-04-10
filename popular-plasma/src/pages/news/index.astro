@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/03organisms/PageHero.astro';
+
+const newsList = [
+  { href: '/news/1', date: '2026-04-01', tag: 'お知らせ', title: '2026年度 新卒採用エントリー受付を開始しました' },
+  { href: '/news/2', date: '2026-03-15', tag: 'プレスリリース', title: '株式会社○○と業務提携契約を締結いたしました' },
+  { href: '/news/3', date: '2026-03-01', tag: 'お知らせ', title: 'ゴールデンウィーク期間中の営業について' },
+  { href: '/news/4', date: '2026-02-14', tag: '受賞・掲載', title: '○○アワード2025 優秀賞を受賞しました' },
+  { href: '/news/5', date: '2026-01-20', tag: 'プレスリリース', title: '新サービス「○○」の提供を開始しました' },
+  { href: '/news/6', date: '2026-01-06', tag: 'お知らせ', title: '年始の営業開始についてのご案内' },
+];
+---
+
+<Layout title="ニュース | COMPANY" description="最新のお知らせ・プレスリリースをご紹介します。">
+  <PageHero title="ニュース" en="News" />
+
+  <section class="news-list">
+    <div class="news-list__inner">
+      <ul class="news-items">
+        {newsList.map((item) => (
+          <li class="news-item">
+            <a href={item.href} class="news-item__link">
+              <time class="news-item__date" datetime={item.date}>{item.date}</time>
+              <span class="news-item__tag">{item.tag}</span>
+              <span class="news-item__title">{item.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style lang="scss">
+  @use '../../styles/global/functions' as *;
+  @use '../../styles/global/mixin' as *;
+
+  .news-list {
+    padding: 96px 0;
+
+    @include media() {
+      padding: 64px 0;
+    }
+
+    &__inner {
+      @include container();
+      max-width: 800px;
+    }
+  }
+
+  .news-items {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-item {
+    border-bottom: 1px solid color('gray');
+
+    &:first-child {
+      border-top: 1px solid color('gray');
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 0;
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+
+      &:hover {
+        opacity: 1;
+        color: color('primary');
+      }
+
+      @include media() {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 20px 0;
+      }
+    }
+
+    &__date {
+      font-family: font('en');
+      font-size: 1.4rem;
+      white-space: nowrap;
+      color: #888a94;
+      flex-shrink: 0;
+    }
+
+    &__tag {
+      font-size: 1.2rem;
+      padding: 2px 12px;
+      border: 1px solid color('gray');
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    &__title {
+      font-size: 1.5rem;
+      line-height: 1.6;
+    }
+  }
+</style>
